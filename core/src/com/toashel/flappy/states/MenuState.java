@@ -9,14 +9,14 @@ import com.toashel.flappy.FlappyBird;
  * Created by Sheldon on 12/15/2015.
  */
 public class MenuState extends State {
-    private Texture background;
-    private Texture playButton;
+    private Texture background, playButton, logo;
 
     public MenuState(GameStateManager gsm) {
         super(gsm);
         camera.setToOrtho(false, FlappyBird.WIDTH / 2, FlappyBird.HEIGHT / 2);
         background = new Texture("bg.png");
         playButton = new Texture("playbtn.png");
+        logo = new Texture("logo.png");
     }
     @Override
     protected void handleInput() {
@@ -38,6 +38,7 @@ public class MenuState extends State {
         sb.begin();
         sb.draw(background, 0, 0);
         sb.draw(playButton, camera.position.x - (playButton.getWidth() / 2), camera.position.y);
+        sb.draw(logo, camera.position.x - (logo.getWidth() / 2), camera.position.y + (logo.getHeight() * 2));
         sb.end();
     }
 

@@ -16,9 +16,11 @@ import com.toashel.flappy.sprites.Pipe;
  */
 public class PlayState extends State {
     private static final int SPACING = 125;
-    private static final int COUNT = 4;
+    private static final int COUNT = 2;
     private static final int GROUND_OFFSET = -50;
     private int score = 0;
+    private int scoreLine = 0;
+    private int scoreGap = SPACING + Pipe.PIPE_WIDTH;
 
     private Bird bird;
     private Texture background;
@@ -50,6 +52,8 @@ public class PlayState extends State {
         for (int i = 1; i <= COUNT; i++) {
             pipes.add(new Pipe(i * (SPACING + Pipe.PIPE_WIDTH)));
         }
+
+        scoreLine = SPACING + Pipe.PIPE_WIDTH;
     }
 
     @Override
@@ -67,6 +71,7 @@ public class PlayState extends State {
         if (!bird.getAlive()) {
             gsm.set(new MenuState((gsm)));
         }
+
         bird.update(deltaTime);
         updateGround();
         camera.position.x = bird.getPosition().x + 80;
@@ -83,15 +88,15 @@ public class PlayState extends State {
                 bird.die();
             }
 
-            if (bird.getPosition().x == pipe.getPosBotPipe().x) {
-                increment();
-                coin.play(0.3f);
+            if (bird.getPosition().x >= scoreLine) {
+                increaseScore();
+                scoreLine += scoreGap;
             }
-            System.out.println("" + (int) bird.getPosition().x + " || " + (int) pipe.getPosBotPipe().x);
+
+            System.out.println("" + (int) pipe.getPosBotPipe().x);
 
             if (bird.getPosition().y <= ground.getHeight() + GROUND_OFFSET){
                 bird.die();
-//                gsm.set(new PlayState(gsm));
             }
 
             camera.update();
@@ -121,6 +126,7 @@ public class PlayState extends State {
     public void dispose() {
         background.dispose();
         bird.dispose();
+        coin.dispose();
 
         for (Pipe pipe : pipes) {
             pipe.dispose();
@@ -136,7 +142,8 @@ public class PlayState extends State {
         }
     }
 
-    private synchronized void increment() {
+    private synchronized void increaseScore() {
         score++;
+        coin.play(0.3f);
     }
 }

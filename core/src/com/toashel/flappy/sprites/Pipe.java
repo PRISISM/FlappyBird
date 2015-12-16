@@ -18,7 +18,7 @@ public class Pipe {
 
     private Texture topPipe, bottomPipe;
     private Vector2 posTopPipe, posBotPipe;
-    private Rectangle boundsTop, boundsBot, scoreBounds;
+    private Rectangle boundsTop, boundsBot;
     private Random rand;
 
     public Pipe(float x) {
@@ -31,8 +31,6 @@ public class Pipe {
 
         boundsTop = new Rectangle(posTopPipe.x, posTopPipe.y, topPipe.getWidth(), topPipe.getHeight());
         boundsBot = new Rectangle(posBotPipe.x, posBotPipe.y, bottomPipe.getWidth(), bottomPipe.getHeight());
-        scoreBounds = new Rectangle(posBotPipe.x, (float)bottomPipe.getHeight(), (float)bottomPipe.getWidth(), (float)topPipe.getHeight());
-        System.out.println("" + scoreBounds.getX() + "||" + scoreBounds.getY());
     }
 
     public Texture getTopPipe() {
@@ -56,15 +54,10 @@ public class Pipe {
         posBotPipe.set(posBotPipe = new Vector2(x, posTopPipe.y - GAP - bottomPipe.getHeight()));
         boundsTop.setPosition(posTopPipe.x, posTopPipe.y);
         boundsBot.setPosition(posBotPipe.x, posBotPipe.y);
-        scoreBounds.setPosition(posBotPipe.x, (float) bottomPipe.getHeight());
     }
 
     public boolean collides(Rectangle player) {
         return player.overlaps(boundsTop) || player.overlaps(boundsBot);
-    }
-
-    public boolean scores(Rectangle player) {
-        return player.overlaps(scoreBounds);
     }
 
     public void dispose() {
